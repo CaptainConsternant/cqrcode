@@ -1,3 +1,5 @@
+import os
+
 import click
 import qrcode
 from PIL import Image
@@ -13,7 +15,7 @@ from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
     help='Output file path (defaults to "./qrcode.png")',
 )
 @click.argument("url")
-def generate(output_file, url):
+def create(output_file, url):
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -29,11 +31,11 @@ def generate(output_file, url):
             back_color=(255, 255, 255), front_color=(233, 84, 32)
         ),
         module_drawer=RoundedModuleDrawer(),
-        embeded_image_path="assets/canonical.png",
+        embeded_image_path=f"{os.environ.get("SNAP")}/assets/canonical.png",
     )
 
     qri.save(output_file)
 
 
 if __name__ == "__main__":
-    generate()
+    create()
